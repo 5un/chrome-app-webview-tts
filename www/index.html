@@ -20,6 +20,8 @@
 	
 	<script>
 
+		var speechProxyAPI = "http://localhost/speech.php";
+
 		// MySenze Inline Script
 
 		function textToSpeech(text, language, page) {
@@ -258,7 +260,7 @@
 		var btn2Clicked = function(){
 			var vid = document.createElement("iframe");
 		    document.body.appendChild(vid);
-		    vid.src = "http://localhost/speech.php?tl=th&q=อาหารเครื่องดื่ม";
+		    vid.src = speechProxyAPI + "?tl=th&q=อาหารเครื่องดื่ม";
 		};
 
 		var btn3Clicked = function(){
@@ -271,7 +273,7 @@
 
 		}
 		var btn4Clicked = function(){
-			var audio = new Audio("http://localhost/speech.php?tl=th&q=อาหารเครื่องดื่ม");
+			var audio = new Audio(speechProxyAPI + "?tl=th&q=อาหารเครื่องดื่ม");
 			audio.play();
 		}
 
