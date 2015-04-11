@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<body style="background-color:orange;">
+	<!-- script type="text/javascript" src="vk/script2.js"></script -->
+	<h3>This is inside a webview tag</h3>
+	<button onclick="btn1Clicked()">Say with GoogleTTS API and iframe</button><br><br>
+	<button onclick="btn2Clicked()">Say with GoogleTTS API and iframe through a proxy php script</button><br><br>
+	<button onclick="btn3Clicked()">Say with GoogleTTS API and HTML5 audio tag</button><br><br>
+	<button onclick="btn4Clicked()">Say with GoogleTTS API and HTML5 audio tag through a proxy php script</button><br><br>
+	<button onclick="btn5Clicked()">Say with WebspeechAPI</button><br><br>
+	<button onclick="btn6Clicked()">Create Normal iframe</button><br><br>
+	
+	<audio src="http://translate.google.com/translate_tts?tl=en&q=Hello" controls autoplay rel="noreferrer"></audio>
+	
+	<script type="text/javascript" src="https://rawgithub.com/hiddentao/google-tts/master/google-tts.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	
+	<script>
+
+		// MySenze Inline Script
+
+		function textToSpeech(text, language, page) {
+		    if(text === undefined || text === null || text.length === 0)
+		        return
+
+		    var vid = document.createElement("iframe");
+		    document.body.appendChild(vid);
+		    var textParts = [];
+
+		    text.split(" ").forEach(function(word) {
+		        var textPartsIndex = textParts.length - 1;
+		        var currentStr = textParts[textPartsIndex];
+		        if(currentStr !== undefined && currentStr.length + word.length < 100)
+		            textParts[textPartsIndex] += " " + word;
+		        else
+		            textParts.push(word);
+		    })
+
+		    function play(txt) {
+		        vid.src = "http://translate.google.com/translate_tts?tl=" + language + "&q=" + txt;
+		    }
+
+		    var partIndex = 0;
+		    play(textParts[partIndex]);
+
+		    var intervalId = setInterval(function() {
+		        var part = textParts[++partIndex];
+		        if(part !== undefined)
+		            play(part);
+		        else
+		            clearInterval(intervalId);
+		        	window.location.href = page;
+		    }, 2500)
+		}
+
+		function textToSpeechOnly(text, language) {
+		    if(text === undefined || text === null || text.length === 0)
+		        return
+
+		    var vid = document.createElement("iframe");
+		    document.body.appendChild(vid);
+		    var textParts = [];
+
+		    text.split(" ").forEach(function(word) {
+		        var textPartsIndex = textParts.length - 1;
+		        var currentStr = textParts[textPartsIndex];
+		        if(currentStr !== undefined && currentStr.length + word.length < 100)
+		            textParts[textPartsIndex] += " " + word;
+		        else
+		            textParts.push(word);
+		    })
+
+		    function play(txt) {
+		        vid.src = "http://translate.google.com/translate_tts?tl=" + language + "&q=" + txt;
+		    }
+
+		    var partIndex = 0;
+		    play(textParts[partIndex]);
+
+		    var intervalId = setInterval(function() {
+		        var part = textParts[++partIndex];
+		        if(part !== undefined)
+		            play(part);
+		        else
+		            clearInterval(intervalId);
+		    }, 2000)
+		}
+
+		function textToSpeechTranslate(text, textTranslate, language, page){
+			if(text === undefined || text === null || text.length === 0)
+		        return
+
+		    var vid = document.createElement("iframe");
+		    document.body.appendChild(vid);
+		    var textParts = [];
+
+		    text.split(" ").forEach(function(word) {
+		        var textPartsIndex = textParts.length - 1;
+		        var currentStr = textParts[textPartsIndex];
+		        if(currentStr !== undefined && currentStr.length + word.length < 100)
+		            textParts[textPartsIndex] += " " + word;
+		        else
+		            textParts.push(word);
+		    })
+
+		    function play(txt) {
+		        vid.src = "http://translate.google.com/translate_tts?tl=" + language + "&q=" + txt;
+		    }
+
+		    var partIndex = 0;
+		    play(textParts[partIndex]);
+
+		    var intervalId = setInterval(function() {
+		        var part = textParts[++partIndex];
+		        if(part !== undefined){
+		            play(part);
+		        }else{
+		            clearInterval(intervalId);
+		        	textToSpeech(textTranslate, 'th', page);
+		        }
+		    }, 1500)
+		}
+
+		function textToSpeechTranslateOnly(text, textTranslate, language){
+			if(text === undefined || text === null || text.length === 0)
+		        return
+
+		    var vid = document.createElement("iframe");
+		    document.body.appendChild(vid);
+		    var textParts = [];
+
+		    text.split(" ").forEach(function(word) {
+		        var textPartsIndex = textParts.length - 1;
+		        var currentStr = textParts[textPartsIndex];
+		        if(currentStr !== undefined && currentStr.length + word.length < 100)
+		            textParts[textPartsIndex] += " " + word;
+		        else
+		            textParts.push(word);
+		    })
+
+		    function play(txt) {
+		        vid.src = "http://translate.google.com/translate_tts?tl=" + language + "&q=" + txt;
+		    }
+
+		    var partIndex = 0;
+		    play(textParts[partIndex]);
+
+		    var intervalId = setInterval(function() {
+		        var part = textParts[++partIndex];
+		        if(part !== undefined){
+		            play(part);
+		        }else{
+		            clearInterval(intervalId);
+		        	textToSpeechOnly(textTranslate, 'th');
+		        }
+		    }, 1500)
+		}
+
+		function translationAndSpeech(text, language, page){
+			var _text = text.replace("%26","&");
+			_text = _text.toLowerCase();
+			$.ajax({
+				type: "get",
+				url: "https://www.googleapis.com/language/translate/v2",
+				data: {
+					key: "AIzaSyBB94Ih-YRvIAVZCZ8dOFe8ZvpfODcb6-U",
+					source: language,
+					target: "th",
+					q: _text
+				},
+				dataType: 'json',
+				success: function(data) {
+					textToSpeechTranslate(text, data.data.translations[0].translatedText, language, page);
+				}
+			});
+		}
+
+		function translationAndSpeechOnly(text, language){
+			var _text = text.replace("%26","&");
+			_text = _text.toLowerCase();
+			$.ajax({
+				type: "get",
+				url: "https://www.googleapis.com/language/translate/v2",
+				data: {
+					key: "AIzaSyBB94Ih-YRvIAVZCZ8dOFe8ZvpfODcb6-U",
+					source: language,
+					target: "th",
+					q: _text
+				},
+				dataType: 'json',
+				success: function(data) {
+					textToSpeechTranslateOnly(text, data.data.translations[0].translatedText, language);
+				}
+			});
+		}
+
+		function validationSpeech(mlanguage, text, url){
+			if(mlanguage == "TH")
+				textToSpeech(text, mlanguage, url);
+			else
+				translationAndSpeech(text, mlanguage, url);
+		}
+
+		function validationSpeechOnly(mlanguage, text){
+			if(mlanguage == "TH")
+				textToSpeechOnly(text, mlanguage);
+			else
+				translationAndSpeechOnly(text, mlanguage);
+		}
+
+		function saveLog(data){
+			$.ajax({
+				url: '/index.php/Senze/saveLog',
+				data: {
+					data: data
+				},
+				type: 'POST',
+				success: function(data) {
+					
+				}
+			});
+		}
+
+		function playEmergency(){
+			var audio = new Audio("/themes/adminkit/theme/senze/sound/ee.wav");
+			audio.play();
+			saveLog('emergency');
+		}
+
+		
+		//---- TTS Approaches -------------------------------------
+
+		var speakWithWebSpeachAPI = function(text, language, callback){
+			var msg = new SpeechSynthesisUtterance();
+			//var voices = window.speechSynthesis.getVoices();
+			//msg.voice = voices[3]; // Note: some voices don't support altering params
+			msg.voiceURI = 'native';
+			msg.volume = 1; 	// 0 to 1
+			msg.rate = 1; 		// 0.1 to 10
+			msg.pitch = 1.2; 	//0 to 2
+			msg.text = text;
+			msg.lang = language;
+
+			msg.onend = function(e) {
+			  	//console.log('Finished in ' + event.elapsedTime + ' seconds.');
+				callback(e);
+			};
+			speechSynthesis.speak(msg);
+		}
+
+		var btn1Clicked = function(){
+			textToSpeechOnly("อาหารเครื่องดื่ม", "th");
+		};
+
+		var btn2Clicked = function(){
+			var vid = document.createElement("iframe");
+		    document.body.appendChild(vid);
+		    vid.src = "http://localhost/speech.php?tl=th&q=อาหารเครื่องดื่ม";
+		};
+
+		var btn3Clicked = function(){
+			$('audio')
+				.attr('src', 'http://translate.google.com/translate_tts?tl=th&ie=utf-8&q=' + 'อาหารเครื่องดื่ม')
+				.attr('rel', 'noreferrer')
+				.attr('type', 'audio/mp3')
+				.get(0)
+				.play();
+
+		}
+		var btn4Clicked = function(){
+			var audio = new Audio("http://localhost/speech.php?tl=th&q=อาหารเครื่องดื่ม");
+			audio.play();
+		}
+
+		var btn5Clicked = function(){
+			speakWithWebSpeachAPI("อาหาร เครื่องดื่ม", "th", function(e){
+				// navigate
+			});
+		};
+
+	</script>
+</body>
+</html>
